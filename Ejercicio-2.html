@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporizador con Promesas</title>
+    <script>
+        // Función que crea una promesa basada en un temporizador
+        function temporizador(milisegundos) {
+            return new Promise((resolve, reject) => {
+                const timeout = setTimeout(() => {
+                    resolve("Tiempo concluido");
+                }, milisegundos);
+
+                // Rechazar si pasa el doble del tiempo indicado
+                setTimeout(() => {
+                    clearTimeout(timeout);
+                    reject("El tiempo no va bien");
+                }, milisegundos * 2);
+            });
+        }
+
+        // Ejecutar la función y mostrar el resultado en la página
+        window.onload = function() {
+            const resultado = document.getElementById("resultado");
+
+            temporizador(5000)
+                .then(mensaje => {
+                    resultado.textContent = mensaje;
+                })
+                .catch(error => {
+                    resultado.textContent = error;
+                });
+        };
+    </script>
+</head>
+<body>
+    <h1>Temporizador con Promesas</h1>
+    <p id="resultado">Esperando resultado...</p>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitas a la página</title>
+    <script>
+        // Función para obtener el valor de una cookie por su nombre
+        function getCookie(name) {
+            const cookies = document.cookie.split('; ');
+            for (let cookie of cookies) {
+                const [key, value] = cookie.split('=');
+                if (key === name) {
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        // Función para establecer una cookie
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
+        }
+
+        // Función para borrar una cookie
+        function deleteCookie(name) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+        }
+
+        // Manejo de visitas a la página
+        function handleVisits() {
+            let visits = parseInt(getCookie('pageVisits')) || 0;
+            visits += 1;
+
+            if (visits > 10) {
+                // Reiniciar contador y borrar cookie
+                visits = 0;
+                deleteCookie('pageVisits');
+                alert('Has superado las 10 visitas. El contador se ha reiniciado.');
+            } else {
+                // Actualizar cookie con el nuevo valor
+                setCookie('pageVisits', visits, 30);
+            }
+
+            document.getElementById('visitCount').textContent = `Número de visitas: ${visits}`;
+        }
+
+        // Ejecutar cuando se cargue la página
+        window.onload = handleVisits;
+    </script>
+</head>
+<body>
+    <h1>Bienvenido a la página</h1>
+    <p id="visitCount">Número de visitas: </p>
+</body>
+</html>
